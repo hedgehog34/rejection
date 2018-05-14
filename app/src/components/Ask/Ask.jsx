@@ -1,8 +1,9 @@
 import React from 'react';
-import './Ask.css';
+import styles from './Ask.css';
+
 
 export const Ask = () => {
     return (
-        <div className="ask">My Ask</div>
+        <div className={styles.ask}>My Ask</div>
     );
 };
