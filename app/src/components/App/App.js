@@ -9,7 +9,19 @@ class App extends Component {
         question: '',
         askee: '',
         submit: '',
-        questions: {},
+        questions: [],
+    };
+
+    resetQuestion = () => {
+        this.setState({
+            question: '',
+            askee: '',
+            submit: '',
+        });
+    };
+
+    buildQuestions = question => {
+        this.setState({ questions: [ ...this.state.questions, question ] });
     };
 
     handleInputChange = evt => {
@@ -17,21 +29,32 @@ class App extends Component {
     };
 
     handleQuestionSubmit = evt => {
-        // console.log(evt.target.id);
-        // this.setState({ [evt.target.id]: !this.state[evt.target.id] })
         evt.preventDefault();
+
         this.setState({ submit: evt.target.id });
+
+        this.buildQuestions({
+            question: this.state.question,
+            askee: this.state.askee,
+            submit: evt.target.id
+        });
+
+        this.resetQuestion();
     };
 
     render() {
         console.log(this.state);
+        const { question, askee } = this.state;
         return (
             <div className={styles.app}>
                 <header className={styles.header}>
                     <img src={logo} className={styles.logo} alt="logo"/>
                     <h1 className={styles.title}>Rejection Application</h1>
                 </header>
-                <Ask handleInputChange={this.handleInputChange}
+
+                <Ask question={question}
+                     askee={askee}
+                     handleInputChange={this.handleInputChange}
                      handleQuestionSubmit={this.handleQuestionSubmit}/>
             </div>
         );

@@ -4,13 +4,14 @@ import styles from './Ask.css';
 
 export class Ask extends Component {
     render() {
-        const { handleInputChange, handleQuestionSubmit } = this.props;
+        const { handleInputChange, handleQuestionSubmit, question, askee } = this.props;
         return (
             <div className={styles.ask}>
                 <div className={styles.labelInputPair}>
                     <label htmlFor="question"
                            className={styles.label}>Rejection Question</label>
                     <input id="question"
+                           value={question}
                            className={styles.input}
                            type="text"
                            onChange={handleInputChange}/>
@@ -20,6 +21,7 @@ export class Ask extends Component {
                     <label htmlFor="askee"
                            className={styles.label}>Name of the person asked</label>
                     <input id="askee"
+                           value={askee}
                            className={styles.input}
                            type="text"
                            onChange={handleInputChange}/>
