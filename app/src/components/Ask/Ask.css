@@ -1,3 +1,29 @@
 .ask {
-  color: steelblue;
+    padding: 20px;
+    border-bottom: 1px solid steelblue;
 }
+
+.labelInputPair {
+    margin: 20px 0;
+    width: 100%;
+    display: inline-grid;
+    grid-template-columns: 25% 200px;
+}
+
+.label,
+.input {
+    display: inline-block;
+}
+
+.buttons {
+    display: flex;
+    justify-content: flex-end;
+    width: calc(25% + 200px);
+}
+
+.button {
+    margin: 20px 0 20px 10px;
+}
+
+.input {}
+
