@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 
-import { uuid } from "../../util/uuid";
+import { uuid } from '../../util/uuid';
+import { REJECTED } from '../../util/constants';
 import logo from '../../logo.svg';
-import { Ask } from "../Ask/Ask";
-import { QuestionList } from "../QuestionList/QuestionList";
+import { Ask } from '../Ask/Ask';
+import { QuestionList } from '../QuestionList/QuestionList';
 
 import styles from './App.css';
 
@@ -12,7 +13,7 @@ class App extends Component {
     state = {
         question: '',
         askee: '',
-        submit: '',
+        status: '',
         questions: [],
         points: 0,
     };
@@ -21,12 +22,16 @@ class App extends Component {
         this.setState({
             question: '',
             askee: '',
-            submit: '',
+            status: '',
         });
     };
 
     buildQuestions = question => {
-        this.setState({ questions: [ ...this.state.questions, question ] });
+        const { questions, points } = this.state;
+        this.setState({
+            questions: [ ...questions, question ],
+            points: points + (question.status === REJECTED ? 10 : 1),
+        });
     };
 
     handleInputChange = evt => {
@@ -36,19 +41,19 @@ class App extends Component {
     handleQuestionSubmit = evt => {
         evt.preventDefault();
 
-        const { askee, question, points } = this.state;
+        const { askee, question } = this.state;
         const { id } = evt.target;
 
         this.setState({
-            submit: id,
-            points: points + (id === 'rejected' ? 10 : 1),
+            status: id,
         });
 
         this.buildQuestions({
+            id: uuid(),
+            timestamp: Date.now(),
             question,
             askee,
-            submit: id,
-            id: uuid(),
+            status: id,
         });
 
         this.resetQuestion();
@@ -56,6 +61,8 @@ class App extends Component {
 
     render() {
         const { question, askee, questions, points } = this.state;
+
+        console.log(questions);
 
         return (
             <div className={styles.app}>
