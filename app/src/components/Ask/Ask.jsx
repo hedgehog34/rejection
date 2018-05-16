@@ -5,6 +5,8 @@ import styles from './Ask.css';
 export class Ask extends Component {
     render() {
         const { handleInputChange, handleQuestionSubmit, question, askee } = this.props;
+        const btnDisabled = !(question && askee);
+
         return (
             <div className={styles.ask}>
                 <div className={styles.labelInputPair}>
@@ -30,12 +32,14 @@ export class Ask extends Component {
                 <div className={styles.buttons}>
                     <button id="accepted"
                             className={styles.button}
-                            onClick={handleQuestionSubmit}>
+                            onClick={handleQuestionSubmit}
+                            disabled={btnDisabled}>
                         Accepted
                     </button>
-                    <button  id="rejected"
-                             className={styles.button}
-                            onClick={handleQuestionSubmit}>
+                    <button id="rejected"
+                            className={styles.button}
+                            onClick={handleQuestionSubmit}
+                            disabled={btnDisabled}>
                         Rejected
                     </button>
                 </div>

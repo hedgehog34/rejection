@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import logo from '../../logo.svg';
 import { Ask } from "../Ask/Ask";
 
+import { uuid } from "../../util/uuid";
 import styles from './App.css';
+
 
 class App extends Component {
     state = {
@@ -33,18 +35,28 @@ class App extends Component {
 
         this.setState({ submit: evt.target.id });
 
+        const { askee, question } = this.state;
+
         this.buildQuestions({
-            question: this.state.question,
-            askee: this.state.askee,
-            submit: evt.target.id
+            question,
+            askee,
+            submit: evt.target.id,
+            id: uuid(),
         });
 
         this.resetQuestion();
     };
 
     render() {
-        console.log(this.state);
-        const { question, askee } = this.state;
+        const { question, askee, questions } = this.state;
+
+        const questionList = questions.map((q, i) => (
+            <li key={i}>
+                I asked <b>{q.askee}</b>, '{q.question}',
+                and my request get <b>{q.submit.toUpperCase()}</b>
+            </li>
+        ));
+
         return (
             <div className={styles.app}>
                 <header className={styles.header}>
@@ -56,6 +68,11 @@ class App extends Component {
                      askee={askee}
                      handleInputChange={this.handleInputChange}
                      handleQuestionSubmit={this.handleQuestionSubmit}/>
+
+                <ul>
+                    {questionList}
+                </ul>
+
             </div>
         );
     }
