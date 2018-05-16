@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import logo from '../../logo.svg';
-import { Ask } from "../Ask/Ask";
 
 import { uuid } from "../../util/uuid";
+import logo from '../../logo.svg';
+import { Ask } from "../Ask/Ask";
+import { QuestionList } from "../QuestionList/QuestionList";
+
 import styles from './App.css';
 
 
@@ -12,6 +14,7 @@ class App extends Component {
         askee: '',
         submit: '',
         questions: [],
+        points: 0,
     };
 
     resetQuestion = () => {
@@ -33,14 +36,18 @@ class App extends Component {
     handleQuestionSubmit = evt => {
         evt.preventDefault();
 
-        this.setState({ submit: evt.target.id });
+        const { askee, question, points } = this.state;
+        const { id } = evt.target;
 
-        const { askee, question } = this.state;
+        this.setState({
+            submit: id,
+            points: points + (id === 'rejected' ? 10 : 1),
+        });
 
         this.buildQuestions({
             question,
             askee,
-            submit: evt.target.id,
+            submit: id,
             id: uuid(),
         });
 
@@ -48,14 +55,7 @@ class App extends Component {
     };
 
     render() {
-        const { question, askee, questions } = this.state;
-
-        const questionList = questions.map((q, i) => (
-            <li key={i}>
-                I asked <b>{q.askee}</b>, '{q.question}',
-                and my request get <b>{q.submit.toUpperCase()}</b>
-            </li>
-        ));
+        const { question, askee, questions, points } = this.state;
 
         return (
             <div className={styles.app}>
@@ -69,9 +69,9 @@ class App extends Component {
                      handleInputChange={this.handleInputChange}
                      handleQuestionSubmit={this.handleQuestionSubmit}/>
 
-                <ul>
-                    {questionList}
-                </ul>
+                <QuestionList questions={questions}/>
+
+                <h2>{`Total Points ${points}`}</h2>
 
             </div>
         );

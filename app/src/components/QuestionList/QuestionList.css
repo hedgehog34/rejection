@@ -1,0 +1,13 @@
+.li {
+    margin: 10px 0;
+}
+
+.points {
+    font-weight: 400;
+    font-size: 14px;
+    margin-left: 20px;
+    padding: 5px;
+    background: steelblue;
+    color: whitesmoke;
+    border-radius: 50%;
+}
