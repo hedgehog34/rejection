@@ -4,7 +4,7 @@ import { REJECTED } from '../../util/constants';
 
 import styles from './QuestionList.css';
 
-
+//TODO: React type check of `questions` object
 export const QuestionList = ({ questions }) => {
     const questionList = questions.map((q, i) => {
         const pointsEarned = q.status === REJECTED ? 10 : 1;
