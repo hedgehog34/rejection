@@ -1,13 +1,54 @@
 import React, { Component } from 'react';
 
+import { uuid } from "../../util/uuid";
 import { REJECTED, ACCEPTED } from '../../util/constants';
 
 import styles from './Ask.css';
 
 
 export class Ask extends Component {
+    state = {
+        question: '',
+        askee: '',
+        status: '',
+    };
+
+    resetQuestion = () => {
+        this.setState({
+            question: '',
+            askee: '',
+            status: '',
+        });
+    };
+
+    handleInputChange = evt => {
+        this.setState({ [evt.target.id]: evt.target.value });
+    };
+
+    handleQuestionSubmit = evt => {
+        evt.preventDefault();
+
+        const { askee, question } = this.state;
+        const { buildQuestions } = this.props;
+        const { id } = evt.target;
+
+        this.setState({
+            status: id,
+        });
+
+        buildQuestions({
+            id: uuid(),
+            timestamp: Date.now(),
+            question,
+            askee,
+            status: id,
+        });
+
+        this.resetQuestion();
+    };
+
     render() {
-        const { handleInputChange, handleQuestionSubmit, question, askee } = this.props;
+        const { question, askee } = this.state;
         const btnDisabled = !(question && askee);
 
         return (
@@ -19,7 +60,7 @@ export class Ask extends Component {
                            value={question}
                            className={styles.input}
                            type="text"
-                           onChange={handleInputChange}/>
+                           onChange={this.handleInputChange}/>
                 </div>
 
                 <div className={styles.labelInputPair}>
@@ -29,19 +70,19 @@ export class Ask extends Component {
                            value={askee}
                            className={styles.input}
                            type="text"
-                           onChange={handleInputChange}/>
+                           onChange={this.handleInputChange}/>
                 </div>
 
                 <div className={styles.buttons}>
                     <button id={ACCEPTED}
                             className={styles.button}
-                            onClick={handleQuestionSubmit}
+                            onClick={this.handleQuestionSubmit}
                             disabled={btnDisabled}>
                         Accepted
                     </button>
                     <button id={REJECTED}
                             className={styles.button}
-                            onClick={handleQuestionSubmit}
+                            onClick={this.handleQuestionSubmit}
                             disabled={btnDisabled}>
                         Rejected
                     </button>
