@@ -1,5 +1,6 @@
 .li {
     margin: 10px 0;
+    list-style-type: decimal;
 }
 
 .points {
@@ -10,4 +11,9 @@
     background: steelblue;
     color: whitesmoke;
     border-radius: 50%;
+}
+
+.date {
+    color: steelblue;
+    margin-right: 20px;
 }

@@ -8,10 +8,13 @@ import styles from './QuestionList.css';
 export const QuestionList = ({ questions }) => {
     const questionList = questions.map((q, i) => {
         const pointsEarned = q.status === REJECTED ? 10 : 1;
+        console.log(q.timestamp);
+        const date = Date(q.timestamp).toString();
 
         return (
             <li key={i}
                 className={styles.li}>
+                <span className={styles.date}>{date}</span>
                 I asked <b>{q.askee}</b>, '{q.question}',
                 and my request get <b>{q.status.toUpperCase()}</b>
                 <span className={styles.points}>{`+${pointsEarned}`}</span>

@@ -8,11 +8,29 @@ import { QuestionList } from '../QuestionList/QuestionList';
 import styles from './App.css';
 
 
+const LOCAL_STORAGE__KEY = 'questions';
+
+const getLocalStorageQuestions = () => JSON.parse(localStorage.getItem(LOCAL_STORAGE__KEY));
+
+const calculatePoints = () => {
+    if(getLocalStorageQuestions()) {
+        return getLocalStorageQuestions().reduce((acc, q) => {
+            const points = q.status === REJECTED ? 10 : 1;
+            return acc + points;
+        }, 0);
+    }
+};
+
 class App extends Component {
     state = {
-        questions: [],
-        points: 0,
+        questions: getLocalStorageQuestions() || [],
+        points:  calculatePoints() || 0,
     };
+
+    componentDidUpdate() {
+        const { questions } = this.state;
+        localStorage.setItem(LOCAL_STORAGE__KEY, JSON.stringify(questions));
+    }
 
     buildQuestions = question => {
         const { questions, points } = this.state;
@@ -25,6 +43,8 @@ class App extends Component {
 
     render() {
         const { questions, points } = this.state;
+
+        console.log(questions);
 
         return (
             <div className={styles.app}>
