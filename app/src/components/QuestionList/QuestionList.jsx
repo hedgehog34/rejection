@@ -8,8 +8,7 @@ import styles from './QuestionList.css';
 export const QuestionList = ({ questions }) => {
     const questionList = questions.map((q, i) => {
         const pointsEarned = q.status === REJECTED ? 10 : 1;
-        console.log(q.timestamp);
-        const date = Date(q.timestamp).toString();
+        const date = new Date(q.timestamp).toLocaleDateString("en-GB");
 
         return (
             <li key={i}

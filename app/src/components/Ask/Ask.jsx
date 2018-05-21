@@ -45,6 +45,7 @@ export class Ask extends Component {
         });
 
         this.resetQuestion();
+        this.input.focus();
     };
 
     render() {
@@ -60,6 +61,7 @@ export class Ask extends Component {
                            value={question}
                            className={styles.input}
                            type="text"
+                           ref={node => this.input = node}
                            onChange={this.handleInputChange}/>
                 </div>
 

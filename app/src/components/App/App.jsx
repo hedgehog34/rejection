@@ -44,8 +44,6 @@ class App extends Component {
     render() {
         const { questions, points } = this.state;
 
-        console.log(questions);
-
         return (
             <div className={styles.app}>
                 <header className={styles.header}>
