@@ -41,6 +41,15 @@ class App extends Component {
         });
     };
 
+    removeQuestion = id => {
+        const { questions, points } = this.state;
+
+        this.setState({
+            questions: questions.filter(q => q.id !== id),
+            points: points - (questions.find(q => q.id === id).status === REJECTED ? 10 : 1),
+        })
+    };
+
     render() {
         const { questions, points } = this.state;
 
@@ -53,7 +62,8 @@ class App extends Component {
 
                 <Ask buildQuestions={this.buildQuestions}/>
 
-                <QuestionList questions={questions}/>
+                <QuestionList questions={questions}
+                              removeQuestion={this.removeQuestion}/>
 
                 <h2>{`Total Points ${points}`}</h2>
 
