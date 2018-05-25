@@ -10,48 +10,41 @@ import styles from './App.css';
 
 const LOCAL_STORAGE__KEY = 'questions';
 
-const getLocalStorageQuestions = () => JSON.parse(localStorage.getItem(LOCAL_STORAGE__KEY));
-
-const calculatePoints = () => {
-    if(getLocalStorageQuestions()) {
-        return getLocalStorageQuestions().reduce((acc, q) => {
-            const points = q.status === REJECTED ? 10 : 1;
-            return acc + points;
-        }, 0);
-    }
-};
-
 class App extends Component {
     state = {
-        questions: getLocalStorageQuestions() || [],
-        points:  calculatePoints() || 0,
+        questions: [],
     };
 
+    componentDidMount() {
+        const localStorageQuestions = JSON.parse(localStorage.getItem(LOCAL_STORAGE__KEY));
+
+        if (localStorageQuestions) {
+            this.setState({ questions: localStorageQuestions });
+        }
+    }
+
     componentDidUpdate() {
-        const { questions } = this.state;
-        localStorage.setItem(LOCAL_STORAGE__KEY, JSON.stringify(questions));
+        localStorage.setItem(LOCAL_STORAGE__KEY, JSON.stringify(this.state.questions));
     }
 
     buildQuestions = question => {
-        const { questions, points } = this.state;
-
         this.setState({
-            questions: [ ...questions, question ],
-            points: points + (question.status === REJECTED ? 10 : 1),
+            questions: [ ...this.state.questions, question ],
         });
     };
 
     removeQuestion = id => {
-        const { questions, points } = this.state;
-
         this.setState({
-            questions: questions.filter(q => q.id !== id),
-            points: points - (questions.find(q => q.id === id).status === REJECTED ? 10 : 1),
+            questions: this.state.questions.filter(q => q.id !== id),
         })
     };
 
     render() {
-        const { questions, points } = this.state;
+        const { questions } = this.state;
+
+        const points = questions.reduce((acc, q) => {
+            return acc + (q.status === REJECTED ? 10 : 1);
+        }, 0);
 
         return (
             <div className={styles.app}>
@@ -66,7 +59,6 @@ class App extends Component {
                               removeQuestion={this.removeQuestion}/>
 
                 <h2>{`Total Points ${points}`}</h2>
-
             </div>
         );
     }
