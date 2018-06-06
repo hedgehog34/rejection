@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { get, set } from 'idb-keyval';
 
 import { REJECTED } from '../../util/constants';
 import logo from '../../logo.svg';
@@ -8,7 +9,7 @@ import { QuestionList } from '../QuestionList/QuestionList';
 import styles from './App.css';
 
 
-const LOCAL_STORAGE__KEY = 'questions';
+const DB__KEY = 'questions';
 
 class App extends Component {
     state = {
@@ -16,15 +17,16 @@ class App extends Component {
     };
 
     componentDidMount() {
-        const localStorageQuestions = JSON.parse(localStorage.getItem(LOCAL_STORAGE__KEY));
-
-        if (localStorageQuestions) {
-            this.setState({ questions: localStorageQuestions });
-        }
+        get(DB__KEY)
+            .then(val => this.setState({ questions: val }))
+            .then(() => console.log('Data taken from DB!'))
+            .catch(err => console.log('Data pull failed', err));
     }
 
     componentDidUpdate() {
-        localStorage.setItem(LOCAL_STORAGE__KEY, JSON.stringify(this.state.questions));
+        set(DB__KEY, this.state.questions)
+            .then(() => console.log('DB entries updated'))
+            .catch(err => console.log('It failed!', err));
     }
 
     buildQuestions = question => {
