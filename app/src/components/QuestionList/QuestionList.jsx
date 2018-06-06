@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { REJECTED } from '../../util/constants';
+import { REJECTED, DELETE__ALL } from '../../util/constants';
 
 import styles from './QuestionList.css';
 
@@ -21,16 +21,27 @@ const Question = ({ q, removeQuestion }) => {
 };
 
 //TODO: React type check of `questions` object
-export const QuestionList = ({ questions, removeQuestion }) => {
+export const QuestionList = ({ questions, removeQuestion, removeAllQuestions }) => {
     const questionList = questions.map((q, i) => (
         <Question key={i}
                   q={q}
                   removeQuestion={removeQuestion}/>
     ));
 
+    const button = questions.length > 0 && (
+        <button id={DELETE__ALL}
+                className={styles.button}
+                onClick={removeAllQuestions}>
+            Delete All Questions
+        </button>
+    );
+
     return (
-        <ul>
-            {questionList}
-        </ul>
+        <React.Fragment>
+            <ul>
+                {questionList}
+            </ul>
+            {button}
+        </React.Fragment>
     );
 };

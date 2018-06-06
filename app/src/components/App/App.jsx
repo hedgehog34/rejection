@@ -26,7 +26,7 @@ class App extends Component {
     componentDidUpdate() {
         set(DB__KEY, this.state.questions)
             .then(() => console.log('DB entries updated'))
-            .catch(err => console.log('It failed!', err));
+            .catch(err => console.log('DB update failed!', err));
     }
 
     buildQuestions = question => {
@@ -40,6 +40,8 @@ class App extends Component {
             questions: this.state.questions.filter(q => q.id !== id),
         })
     };
+
+    removeAllQuestions = () => this.setState({ questions: [] });
 
     render() {
         const { questions } = this.state;
@@ -58,7 +60,8 @@ class App extends Component {
                 <Ask buildQuestions={this.buildQuestions}/>
 
                 <QuestionList questions={questions}
-                              removeQuestion={this.removeQuestion}/>
+                              removeQuestion={this.removeQuestion}
+                              removeAllQuestions={this.removeAllQuestions}/>
 
                 <h2>{`Total Points ${points}`}</h2>
             </div>
