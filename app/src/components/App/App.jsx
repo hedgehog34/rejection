@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { get, set } from 'idb-keyval';
+import { Store, get, set } from 'idb-keyval';
 
 import { REJECTED } from '../../util/constants';
 import logo from '../../logo.svg';
@@ -9,6 +9,7 @@ import { QuestionList } from '../QuestionList/QuestionList';
 import styles from './App.css';
 
 
+const STORE = new Store('rejection-app-db', 'rejection-store');
 const DB__KEY = 'questions';
 
 class App extends Component {
@@ -17,14 +18,14 @@ class App extends Component {
     };
 
     componentDidMount() {
-        get(DB__KEY)
-            .then(val => this.setState({ questions: val }))
+        get(DB__KEY, STORE)
+            .then(val => this.setState({ questions: val ? val : [] }))
             .then(() => console.log('Data taken from DB!'))
             .catch(err => console.log('Data pull failed', err));
     }
 
     componentDidUpdate() {
-        set(DB__KEY, this.state.questions)
+        set(DB__KEY, this.state.questions, STORE)
             .then(() => console.log('DB entries updated'))
             .catch(err => console.log('DB update failed!', err));
     }
